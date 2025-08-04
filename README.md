@@ -1,54 +1,70 @@
 # 📘 Web Scraper Notebooks
 
-This repository contains several Jupyter notebooks focused on web scraping and job listings data extraction using APIs such as **SerpApi**, **JSearch** (via RapidAPI), and text preprocessing for downstream tasks like analysis or ML.
+This repository contains Jupyter notebooks organized around different scraping use cases including job listing platforms, news, Google search results, and course platforms. Each branch targets a specific kind of data and includes preprocessing for downstream NLP or ML tasks.
 
 ---
 
 ## 🔹 JSearch
 
-This notebook focuses on scraping job data using the [JSearch API](https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch). It includes:
+Scrapes job data from the [JSearch API](https://rapidapi.com/letscrape-6bRBa3QguO5/api/jsearch), hosted on RapidAPI.
 
-- Configuration of `query_params` to search for job listings in India
-- Scraping multiple pages with pagination control
-- Extraction of key job attributes like:
-  - `job_title`, `employer_name`, `job_city`, `job_description`
-  - `salary_min`, `salary_max`, and `job_posted_at_datetime_utc`
-- Rate-limit handling (`HTTP 429`)
-- Formatted timestamps to `dd-mm-yyyy hh:mm`
-- Exporting final data to CSV
-
----
-
-## 🔹 SerpApi
-
-This notebook scrapes Google Jobs search results using [SerpApi](https://serpapi.com/):
-
-- Uses the `engine=google_jobs` with filters for location and query
-- Extracts job-related metadata:
-  - `title`, `company_name`, `location`, `posted_at`
-- Converts relative timestamps ("3 days ago") into UTC format
-- Outputs a clean CSV file with job info
-
-> Note: Limited to 1 page per request due to SerpApi constraints.
+### Key Features:
+- Uses paginated API requests with query parameters like job role, country, and page.
+- Extracts:  
+  - `job_id`, `job_title`, `employer_name`, `job_city`, `job_country`  
+  - `job_description`, `job_type` and `job_posted_at_datetime_utc`
+- Handles API rate limits (HTTP 429)
+- Cleans and formats `job_description`
+- Converts timestamps into `dd-mm-yyyy hh:mm` format
+- Exports clean structured job data as CSV
+- Does EDA on `Top 10 Companies`,  `Job Distribution by City`,  `Top 30 Most Frequent Words in Job Descriptions`, `Bi-gram and Tri-gram on Job Descriptions`
 
 ---
 
-## 🔹 Text Preprocessing
+## 🔹 Google Jobs (SerpAPI)
 
-This notebook performs extensive text processing on the `job_description` column:
+Leverages [SerpApi](https://serpapi.com/) to extract job listing snippets from Google Jobs.
 
-- Lowercasing and punctuation removal
-- Tokenization using NLTK’s `word_tokenize`
-- Stopword removal (`nltk.corpus.stopwords`)
-- Creation of new features like `tokenized_desc` and `tokenized_desc_join`
-- Visualization of most common words via a barplot using Seaborn
-- Distribution plot of word counts per job description
+### Key Features:
+- Uses `engine=google_jobs` to perform location-based job search
+- Extracts data like:
+  - `title`, `company_name`, `location`, `posted_at` 
+- Converts “x days ago” into actual UTC datetime using a timestamp reference
+- One-page limit per API call (SerpApi restriction)
+- Saves formatted dataset to CSV
+
+---
+
+## 🔹 News Article
+
+Scrapes raw search engine results or online news content.
+
+### Key Features:
+- Accepts query inputs (e.g. `"AI developments"` or `"AI regulation news"`)
+- Uses scraping or external APIs to collect:
+  - Titles, URLs, snippets, and sometimes publication dates
+- May include article text extraction logic (`newspaper3k` or `requests + BS4`)
+- Focused on analyzing content trends or gathering articles for NLP analysis
+
+---
+
+## 🔹 Coursera Courses Scraper
+
+Scrapes course listings from [Coursera.org](https://www.coursera.org/).
+
+### Key Features:
+- Extracts metadata from course search results:
+  - `Title`, `Organization`, `Skills`, `Duration`, `Rating`, etc.
+- Parses nested or noisy fields like `Metadata` to isolate skills and durations
+- Handles pagination manually across multiple pages (up to 50)
+- Includes cleaning logic for empty or malformed fields
+- Saves to Excel and performs basic cleaning + formatting
 
 ---
 
 ## 🛠 Requirements
 
-Ensure the following packages are installed before running the notebooks:
+Ensure these libraries are installed before running the notebooks:
 
 - `requests`
 - `pandas`
@@ -56,10 +72,4 @@ Ensure the following packages are installed before running the notebooks:
 - `seaborn`
 - `matplotlib`
 - `tqdm`
-
-Also, download necessary NLTK resources:
-
-```python
-import nltk
-nltk.download('punkt')
-nltk.download('stopwords')
+- `bs4`
