@@ -17,10 +17,11 @@ Scrapes job data from the [JSearch API](https://rapidapi.com/letscrape-6bRBa3Qgu
 - Cleans and formats `job_description`
 - Converts timestamps into `dd-mm-yyyy hh:mm` format
 - Exports clean structured job data as CSV
-- Does EDA on `Top 10 Companies`,  `Job Distribution by City`,  `Top 30 Most Frequent Words in Job Descriptions`,
-  `Bi-gram and Tri-gram on Job Descriptions`
-
----
+- Does EDA on  
+  -`Top 10 Companies`,  `Job Distribution by City`,
+  -`Top 30 Most Frequent Words in Job Descriptions`,
+  -`Bi-gram and Tri-gram on Job Descriptions`
+ 
 
 ## 🔹 Google Jobs (SerpAPI)
 
